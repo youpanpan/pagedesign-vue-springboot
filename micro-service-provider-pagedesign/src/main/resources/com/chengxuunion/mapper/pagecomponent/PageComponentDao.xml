@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chengxuunion.pagecomponent.dao.PageComponentDao">
+    
+    <!-- 结果集 -->
+    <resultMap id="PageComponentResult" type="PageComponent">
+        <id property="id" column="id"/>
+        <result property="pageId" column="pageid"/>
+        <result property="componentName" column="componentname"/>
+        <result property="componentCode" column="componentcode"/>
+        <result property="createDate" column="createdate" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="createUser" column="createuser"/>
+        <result property="updateDate" column="updatedate" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="updateUser" column="updateuser"/>
+        <result property="orderNum" column="ordernum"/>
+        <result property="state" column="state"/>
+        <collection  property="componentAttrs" 
+	        select="com.chengxuunion.componentattr.dao.ComponentAttrDao.queryComponentAttrs"
+            column="{componentId=id}"
+        ></collection>
+    </resultMap>
+    
+    <!-- 所有列名 -->
+    <sql id="ALL_COLUMNS">
+        id,
+        pageid,
+        componentname,
+        componentcode,
+        createdate,
+        createuser,
+        updatedate,
+        updateuser,
+        ordernum,
+        state
+    </sql>
+    
+    <!-- 查询指定页面的所有组件 -->
+    <select id="queryPageComponens" resultMap="PageComponentResult">
+        SELECT 
+            <include refid="ALL_COLUMNS"/>
+        FROM 
+            pagecomponent
+        <where>
+            pageid = #{pageId}
+        </where>
+    </select>
+
+    <!-- 新增页面 -->
+    <insert id="savePageComponentBatch" parameterType="java.util.List">
+        INSERT INTO
+            pagecomponent
+        (
+            <include refid="ALL_COLUMNS"/>
+        )
+        VALUES 
+        <foreach collection="list" item="component" separator=",">
+        (
+            #{component.id},
+            #{component.pageId},
+            #{component.componentName},
+            #{component.componentCode},
+            #{component.createDate},
+            #{component.createUser},
+            #{component.updateDate},
+            #{component.updateUser},
+            #{component.orderNum},
+            #{component.state}
+        )
+        </foreach>
+    </insert>
+    
+    <!-- 删除指定页面的所有组件-->
+    <delete id="deletePageComponents">
+        DELETE FROM
+            pagecomponent
+        <where>
+            pageid = #{pageId}
+        </where>
+    </delete>
+    
+</mapper>

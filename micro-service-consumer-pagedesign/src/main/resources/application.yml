@@ -1,0 +1,16 @@
+#配置web服务器
+server:
+    port: 80
+    servlet:
+        context-path: /pagedesign-consumer
+        
+#日志配置
+#开启DEBUG级别的日志
+debug: true
+logging:
+    level:
+        root: INFO
+    file: /logs/pagedesign-consumer.log
+    pattern:
+        console: "%d{yyyy/MM/dd-HH:mm:ss} [%thread] %-5level %logger- %msg%n"
+        file: "%d{yyyy/MM/dd-HH:mm} [%thread] %-5level %logger- %msg%n"    

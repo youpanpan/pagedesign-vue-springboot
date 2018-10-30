@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.chengxuunion</groupId>
+  <artifactId>micro-service</artifactId>
+  <version>0.0.1</version>
+  <packaging>pom</packaging>
+  
+  <!-- 依赖的父项目 -->
+  <parent>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-parent</artifactId>
+      <version>2.0.4.RELEASE</version>
+      <relativePath/> <!-- lookup parent from repository -->
+  </parent>
+  
+  <!-- 属性配置 -->
+  <properties>
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+      <java.version>1.8</java.version>
+  </properties>
+  
+  <dependencyManagement>
+    <dependencies>
+    
+        <!-- 依赖micro-service-api -->
+		<dependency>
+		   <groupId>com.chengxuunion</groupId>
+		   <artifactId>micro-service-api</artifactId>
+		   <version>0.0.1</version>
+		</dependency>
+		
+		<!-- 依赖micro-common -->
+		<dependency>
+	        <groupId>com.chengxuunion</groupId>
+	        <artifactId>micro-common</artifactId>
+	        <version>0.0.1</version>
+	    </dependency>
+        
+        <!-- SpringCloud依赖包 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-dependencies</artifactId>
+            <version>Finchley.SR1</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+        
+        <!-- mybatis依赖 -->
+		<dependency>
+		    <groupId>org.mybatis.spring.boot</groupId>
+		    <artifactId>mybatis-spring-boot-starter</artifactId>
+		    <version>1.3.2</version>
+		</dependency>
+		
+		<!-- mybatis分页插件: pagehelper -->
+		<dependency>
+		    <groupId>com.github.pagehelper</groupId>
+		    <artifactId>pagehelper</artifactId>
+		    <version>4.1.4</version>
+		</dependency>
+		
+		<!-- 邮件发送 -->
+		<dependency>
+	        <groupId>javax.mail</groupId>
+	        <artifactId>mail</artifactId>
+	        <version>1.4.7</version>
+	    </dependency>
+	    
+	    <!-- json转换 -->
+	    <dependency>
+	        <groupId>com.alibaba</groupId>
+	        <artifactId>fastjson</artifactId>
+	        <version>1.1.41</version>
+	    </dependency>
+        
+    </dependencies>
+  </dependencyManagement>
+  
+  <build>
+    <finalName>micro-service</finalName>
+    <plugins>
+	    <!-- java编译插件 --> 
+	    <plugin> 
+	         <groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>maven-compiler-plugin</artifactId>
+	        <configuration>
+	            <!-- 源码使用的开发版本 -->
+	            <source>${java.version}</source>
+	            <!-- 编译版本 -->
+	            <target>${java.version}</target>
+	            <!-- 编译器编译源码编码格式 -->
+	            <encoding>${project.build.sourceEncoding}</encoding>
+	        </configuration> 
+	    </plugin> 
+    </plugins>
+  </build>
+  
+  <modules>
+  	<module>micro-service-api</module>
+  	<module>micro-service-provider-pagedesign</module>
+  	<module>micro-service-consumer-pagedesign</module>
+    <module>micro-common</module>
+  </modules>
+</project>

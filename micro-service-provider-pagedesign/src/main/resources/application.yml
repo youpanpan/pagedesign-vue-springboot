@@ -1,0 +1,31 @@
+#配置web服务器
+server:
+    port: 8090
+    servlet:
+        context-path: /pagedesign-provider
+
+#mybatis配置
+mybatis:
+    config-location: classpath:mybatis-config.xml
+    mapper-locations: classpath*:com/chengxuunion/mapper/**/*.xml
+    type-aliases-package: com.chengxuunion
+
+
+spring:
+    #数据源配置
+    datasource:
+        driverClassName: com.mysql.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/pagedesign?useUnicode\=true&characterEncoding\=UTF-8&allowMultiQueries\=true
+        username: root
+        password: 123456
+        
+#日志配置
+#开启DEBUG级别的日志
+debug: true
+logging:
+    level:
+        root: INFO
+    file: /logs/pagedesign-provider.log
+    pattern:
+        console: "%d{yyyy/MM/dd-HH:mm:ss} [%thread] %-5level %logger- %msg%n"
+        file: "%d{yyyy/MM/dd-HH:mm} [%thread] %-5level %logger- %msg%n"    

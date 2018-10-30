@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chengxuunion.componentattr.dao.ComponentAttrDao">
+    
+    <!-- 结果集 -->
+    <resultMap id="ComponentAttrResult" type="ComponentAttr">
+        <id property="id" column="id"/>
+        <result property="componentId" column="componentid"/>
+        <result property="attrName" column="attrname"/>
+        <result property="attrValue" column="attrvalue" javaType="string" jdbcType="CLOB"/>
+        <result property="attrType" column="attrtype"/>
+        <result property="createDate" column="createdate" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="createUser" column="createuser"/>
+        <result property="updateDate" column="updatedate" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="updateUser" column="updateuser"/>
+        <result property="orderNum" column="ordernum"/>
+        <result property="state" column="state"/>
+    </resultMap>
+    
+    <!-- 所有列名 -->
+    <sql id="ALL_COLUMNS">
+        id,
+        componentid,
+        attrname,
+        attrvalue,
+        attrtype,
+        createdate,
+        createuser,
+        updatedate,
+        updateuser,
+        ordernum,
+        state
+    </sql>
+    
+    <!-- 查询指定组件的组件属性 -->
+    <select id="queryComponentAttrs" resultMap="ComponentAttrResult">
+        SELECT 
+            <include refid="ALL_COLUMNS"/>
+        FROM 
+            componentattr
+        <where>
+            <if test="componentId != null and componentId != ''">
+                AND componentid = #{componentId}
+            </if>
+        </where>
+    </select>
+
+    <!-- 新增组件属性 -->
+    <insert id="saveComponentAttrBatch" parameterType="java.util.List">
+        INSERT INTO
+            componentattr
+        (
+            <include refid="ALL_COLUMNS"/>
+        )
+        VALUES 
+        <foreach collection="list" item="attr" separator=",">
+        (
+            #{attr.id},
+            #{attr.componentId},
+            #{attr.attrName},
+            #{attr.attrValue},
+            #{attr.attrType},
+            #{attr.createDate},
+            #{attr.createUser},
+            #{attr.updateDate},
+            #{attr.updateUser},
+            #{attr.orderNum},
+            #{attr.state}
+        )
+        </foreach>
+    </insert>
+    
+    <!-- 删除组件属性 -->
+    <delete id="deleteComponentAttr">
+        DELETE attr FROM
+            componentattr attr
+        <where>
+            EXISTS (
+                SELECT 
+                    id 
+                FROM 
+                    pagecomponent component
+                
+                WHERE 
+                    component.id = attr.componentid 
+                    AND pageid = #{pageId}
+            )
+        </where>
+    </delete>
+    
+    <!-- 删除页面组件的属性 -->
+    <delete id="deleteComponentAttrByPage">
+        DELETE FROM
+            componentattr
+        <where>
+            componentid = #{pageId}
+        </where>
+    </delete>
+    
+</mapper>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chengxuunion.page.dao.PageDao">
+    
+    <!-- 结果集 -->
+    <resultMap id="PageResult" type="Page">
+        <id property="id" column="id"/>
+        <result property="pageName" column="pagename"/>
+        <result property="createDate" column="createdate" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="createUser" column="createuser"/>
+        <result property="updateDate" column="updatedate" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="updateUser" column="updateuser"/>
+        <result property="orderNum" column="ordernum"/>
+        <result property="state" column="state"/>
+        <collection  property="componentAttrs" 
+            select="com.chengxuunion.componentattr.dao.ComponentAttrDao.queryComponentAttrs"
+            column="{componentId=id}"
+        ></collection>
+    </resultMap>
+    
+    <!-- 所有列名 -->
+    <sql id="ALL_COLUMNS">
+        id,
+        pagename,
+        createdate,
+        createuser,
+        updatedate,
+        updateuser,
+        ordernum,
+        state
+    </sql>
+    
+    <!-- 查询指定用户的所有页面 -->
+    <select id="queryAllPage" resultMap="PageResult">
+        SELECT 
+            <include refid="ALL_COLUMNS"/>
+        FROM 
+            page
+    </select>
+    
+    <!-- 查询指定页面 -->
+    <select id="queryPage" resultMap="PageResult">
+        SELECT 
+            <include refid="ALL_COLUMNS"/>
+        FROM 
+            page
+        <where>
+            id = #{pageId}
+        </where>
+    </select>
+
+    <!-- 新增页面 -->
+    <insert id="addPage" parameterType="Page">
+        INSERT INTO
+            page
+        <trim prefix=" (" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">id,</if>
+            <if test="pageName != null and pageName != ''">pagename,</if>
+            <if test="createUser != null and createUser != ''">createuser,</if>
+            <if test="createDate != null">createdate,</if>
+            <if test="updateUser != null and updateUser != ''">updateuser,</if>
+            <if test="updateDate != null">updatedate,</if>
+            <if test="orderNum != null">ordernum,</if>
+            <if test="state != null and state != ''">state,</if>
+        </trim>
+        <trim prefix=" VALUES (" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">#{id},</if>
+            <if test="pageName != null and pageName != ''">#{pageName},</if>
+            <if test="createUser != null and createUser != ''">#{createUser},</if>
+            <if test="createDate != null">#{createDate},</if>
+            <if test="updateUser != null and updateUser != ''">#{updateUser},</if>
+            <if test="updateDate != null">#{updateDate},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+            <if test="state != null and state != ''">#{state},</if>
+        </trim>
+    </insert>
+    
+    <!-- 更新页面 -->
+    <update id="updatePage" parameterType="Page">
+        UPDATE
+            page
+        <set>
+            <if test="pageName != null and pageName != ''">pagename = #{pageName},</if>
+            <if test="createUser != null and createUser != ''">createuser= #{createUser},</if>
+            <if test="createDate != null">createdate = #{createDate},</if>
+            <if test="updateUser != null and updateUser != ''">updateuser = #{updateUser},</if>
+            <if test="updateDate != null">updatedate = #{updateDate},</if>
+            <if test="orderNum != null">ordernum = #{orderNum},</if>
+            <if test="state != null and state != ''">state = #{state},</if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+    
+    <!-- 删除指定页面 -->
+    <delete id="deletePage">
+        DELETE FROM
+            page
+        <where>
+            id = #{pageId}
+        </where>
+    </delete>
+    
+</mapper>
